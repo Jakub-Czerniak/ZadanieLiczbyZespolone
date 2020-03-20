@@ -17,12 +17,20 @@ struct  LZespolona {
 };
 
 
+LZespolona utworz(double arg1, double arg2);
+void wyswietl(LZespolona Skl);
+LZespolona Sprzezenie(LZespolona Skl);
+double Modul2(LZespolona Skl);
+
 /*
  * Dalej powinny pojawic sie zapowiedzi definicji przeciazen operatorow
  */
 
 
 LZespolona  operator + (LZespolona  Skl1,  LZespolona  Skl2);
-
+LZespolona  operator - (LZespolona  Skl1,  LZespolona  Skl2);
+LZespolona  operator *(LZespolona  Skl1,  LZespolona  Skl2);
+LZespolona  operator /(LZespolona  Skl1,  LZespolona  Skl2);
+LZespolona  operator /(LZespolona  Skl1,  double  Skl2);
 
 #endif
