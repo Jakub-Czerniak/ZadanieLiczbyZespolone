@@ -1,6 +1,6 @@
 #include<iostream>
 #include "LZespolona.hh"
-using namespace std;
+
 
 
 /*!
@@ -93,4 +93,24 @@ LZespolona operator /(LZespolona Skl1, LZespolona Skl2)
 }
 
 
+std::istream & operator >>(std::istream &wejsc, LZespolona &Skl)
+{
+  char znak;
+  
+  wejsc>>znak;
+  if(znak != '(')
+    wejsc.setstate(std::ios::failbit);
+  wejsc>>Skl.re>>Skl.im>>znak;
+  if(znak != 'i')
+    wejsc.setstate(std::ios::failbit);
+  wejsc>>znak;
+  if (znak != ')')
+    wejsc.setstate(std::ios::failbit);
+  return wejsc;
+}
 
+std::ostream & operator <<(std::ostream &wyjsc, LZespolona Skl)
+{
+  wyjsc<<"("<<Skl.re<<showpos<<Skl.im<<noshowpos<<"i)";
+  return wyjsc;
+}

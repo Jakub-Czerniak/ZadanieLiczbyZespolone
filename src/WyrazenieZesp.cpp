@@ -1,6 +1,6 @@
 #include<iostream> 
 #include "WyrazenieZesp.hh"
-using namespace std;
+
 
 /*
  * Tu nalezy zdefiniowac funkcje, ktorych zapowiedzi znajduja sie
@@ -25,6 +25,7 @@ void Wyswietl(WyrazenieZesp WyrZ)
 }
 
 
+
 LZespolona Oblicz(WyrazenieZesp WyrZ)
 {
   LZespolona Wynik;
@@ -44,3 +45,40 @@ LZespolona Oblicz(WyrazenieZesp WyrZ)
   return Wynik;
 }
     
+std::istream & operator >>(std::istream &wejsc, WyrazenieZesp &WyrZ)
+{
+  char znak;
+  
+  wejsc >> WyrZ.Arg1 >> znak >> WyrZ.Arg2;
+  switch(znak)
+    {
+    case'+': WyrZ.Op=Op_Dodaj;
+      break;
+    case'-': WyrZ.Op=Op_Odejmij;
+      break;
+    case'*': WyrZ.Op=Op_Mnoz;
+      break;
+    case'/': WyrZ.Op=Op_Dziel;
+      break;
+    }
+  return wejsc;
+}
+
+
+std::ostream & operator <<(std::ostream &wyjsc, WyrazenieZesp WyrZ)
+{
+  wyjsc<<WyrZ.Arg1;
+  switch(WyrZ.Op)
+    {
+    case Op_Dodaj: wyjsc<<"+";
+      break;
+    case Op_Odejmij: wyjsc<<"-";
+      break;
+    case Op_Mnoz: wyjsc<<"*";
+      break;
+    case Op_Dziel: wyjsc<<"/";
+      break;
+    }
+  wyjsc<<WyrZ.Arg2;
+  return wyjsc;
+}

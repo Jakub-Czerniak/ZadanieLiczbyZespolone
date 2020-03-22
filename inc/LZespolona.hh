@@ -32,5 +32,6 @@ LZespolona  operator - (LZespolona  Skl1,  LZespolona  Skl2);
 LZespolona  operator *(LZespolona  Skl1,  LZespolona  Skl2);
 LZespolona  operator /(LZespolona  Skl1,  LZespolona  Skl2);
 LZespolona  operator /(LZespolona  Skl1,  double  Skl2);
-
+std::istream & operator >>(std::istream &wejsc, LZespolona &Skl);
+std::ostream & operator <<(std::ostream &wyjsc, LZespolona Skl);
 #endif
