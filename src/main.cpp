@@ -1,4 +1,7 @@
 #include <iostream>
+#include "LZespolona.hh"
+#include "WyrazenieZesp.hh"
+#include "statystyka.hh"
 #include "BazaTestu.hh"
 
 using namespace std;
@@ -8,7 +11,13 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-
+  BazaTestu   BazaT = { nullptr, 0, 0 };
+  WyrazenieZesp   WyrZ_PytanieTestowe;
+  LZespolona LZes_Odp;
+  Statystyki stat;
+  int il_prob;
+  
+ 
   if (argc < 2) {
     cout << endl;
     cout << " Brak opcji okreslajacej rodzaj testu." << endl;
@@ -16,11 +25,9 @@ int main(int argc, char **argv)
     cout << endl;
     return 1;
   }
+  
 
-
-  BazaTestu   BazaT = { nullptr, 0, 0 };
-
-  if (InicjalizujTest(&BazaT,argv[1]) == false) {
+  if (InicjalizujTest(&BazaT,argv[1],stat) == false) {
     cerr << " Inicjalizacja testu nie powiodla sie." << endl;
     return 1;
   }
@@ -31,16 +38,46 @@ int main(int argc, char **argv)
   cout << " Start testu arytmetyki zespolonej: " << argv[1] << endl;
   cout << endl;
 
-  WyrazenieZesp   WyrZ_PytanieTestowe;
+
   
   while (PobierzNastpnePytanie(&BazaT,&WyrZ_PytanieTestowe)) {
-    cout << " Czesc rzeczywista pierwszego argumentu: ";
-    cout << WyrZ_PytanieTestowe.Arg1.re << endl;
+    cout << "Twoje pytanie: ";
+    cout << WyrZ_PytanieTestowe << endl;
+    cout << "Twoja odpowiedź: ";
+    cin >> LZes_Odp;
+    for(il_prob=2;!cin.good();il_prob--)
+      {
+	if(il_prob==0)
+	  {
+	    cerr << "Przekroczono liczbę prób wpisania technicznie poprawnej liczby."; 
+	    exit(1);
+	  }
+	cin.clear();
+	cin.ignore(10000,'\n');
+	cout << "Wpisz liczbę w formacie (x(+ lub -)yi)"<< endl;
+	cout << "Zostało prób: " << il_prob <<endl;
+	cin >> LZes_Odp;
+      }
+    cout << endl;
+    if(Oblicz(WyrZ_PytanieTestowe)==LZes_Odp)
+      {
+	cout <<"Odpowiedź poprawna." <<endl;
+	poprawne(stat);
+      }
+    else
+      {
+	cout <<"Odpowiedź niepoprawna" <<endl;
+	niepoprawna(stat);
+      }    
   }
 
   
   cout << endl;
-  cout << " Koniec testu" << endl;
+  cout << "Statystyki końcowe:" <<endl;
+  cout << "Ilość poprawnych: " << ile_dobrych(stat) << endl;
+  cout << "Ilość wszytskich: " << ile_wszystkich(stat) << endl;
+  cout << "Procent poprawnych: " << procent_dobrych(stat) << "%" << endl;
+  cout << "Koniec testu." << endl;
   cout << endl;
 
 }

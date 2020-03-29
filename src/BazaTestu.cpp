@@ -21,8 +21,53 @@ static WyrazenieZesp  TestLatwy[] =
  *
  */
 
+static WyrazenieZesp TestTrudny[] =
+  { {{7,7}, Op_Dodaj, {0,6}},
+    {{16,2}, Op_Odejmij, {2,7}},
+    {{3,9.6}, Op_Mnoz, {3,6.4}},
+    {{20,5}, Op_Dziel, {20,5}},
+    {{4,8}, Op_Mnoz, {6,9}},
+    {{4.5,8}, Op_Dodaj, {2.6,0.3}},
+  };
 
 
+
+void UstawTest( BazaTestu *wskBazaTestu, WyrazenieZesp *wskTabTestu, unsigned int IloscPytan )
+{
+  wskBazaTestu->wskTabTestu = wskTabTestu;
+  wskBazaTestu->IloscPytan = IloscPytan;
+  wskBazaTestu->IndeksPytania = 0;
+}
+
+
+bool InicjalizujTest( BazaTestu  *wskBazaTestu, const char *sNazwaTestu, Statystyki &st)
+{
+  wyzeruj(st);
+  if (!strcmp(sNazwaTestu,"latwy")) {
+    UstawTest(wskBazaTestu,TestLatwy,sizeof(TestLatwy)/sizeof(WyrazenieZesp));
+    return true;
+  }
+  /*
+   * Analogicznie zrob inicjalizacje dla testu trudne
+   */
+  if (!strcmp(sNazwaTestu,"trudny")) {
+    UstawTest(wskBazaTestu,TestTrudny,sizeof(TestTrudny)/sizeof(WyrazenieZesp));
+    return true;
+  }
+  
+  cerr << "Otwarcie testu '" << sNazwaTestu << "' nie powiodlo sie." << endl;
+  return false;
+}
+
+ 
+bool PobierzNastpnePytanie( BazaTestu  *wskBazaTestu, WyrazenieZesp *wskWyrazenie )
+{
+  if (wskBazaTestu->IndeksPytania >= wskBazaTestu->IloscPytan) return false;
+
+  *wskWyrazenie = wskBazaTestu->wskTabTestu[wskBazaTestu->IndeksPytania];
+  ++wskBazaTestu->IndeksPytania;
+  return true;
+}
 
 
 /*
@@ -42,13 +87,6 @@ static WyrazenieZesp  TestLatwy[] =
  *      - Parametr IloscPytan zawiera wartosc, ktora nie przekracza ilosci elementow
  *        w tablicy dostepnej poprzez wskTabTestu.
  */
-void UstawTest( BazaTestu *wskBazaTestu, WyrazenieZesp *wskTabTestu, unsigned int IloscPytan )
-{
-  wskBazaTestu->wskTabTestu = wskTabTestu;
-  wskBazaTestu->IloscPytan = IloscPytan;
-  wskBazaTestu->IndeksPytania = 0;
-}
-
 
 
 
@@ -71,19 +109,6 @@ void UstawTest( BazaTestu *wskBazaTestu, WyrazenieZesp *wskTabTestu, unsigned in
  *              zainicjalizowany,
  *       false - w przypadku przeciwnym.
  */
-bool InicjalizujTest( BazaTestu  *wskBazaTestu, const char *sNazwaTestu )
-{
-  if (!strcmp(sNazwaTestu,"latwy")) {
-    UstawTest(wskBazaTestu,TestLatwy,sizeof(TestLatwy)/sizeof(WyrazenieZesp));
-    return true;
-  }
-  /*
-   * Analogicznie zrob inicjalizacje dla testu trudne
-   */
-
-  cerr << "Otwarcie testu '" << sNazwaTestu << "' nie powiodlo sie." << endl;
-  return false;
-}
 
 
 
@@ -106,11 +131,3 @@ bool InicjalizujTest( BazaTestu  *wskBazaTestu, const char *sNazwaTestu )
  *              przypisane nowe wyrazenie zespolone z bazy,
  *       false - w przypadku przeciwnym.
  */
-bool PobierzNastpnePytanie( BazaTestu  *wskBazaTestu, WyrazenieZesp *wskWyrazenie )
-{
-  if (wskBazaTestu->IndeksPytania >= wskBazaTestu->IloscPytan) return false;
-
-  *wskWyrazenie = wskBazaTestu->wskTabTestu[wskBazaTestu->IndeksPytania];
-  ++wskBazaTestu->IndeksPytania;
-  return true;
-}

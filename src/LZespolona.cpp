@@ -1,7 +1,7 @@
 #include<iostream>
 #include "LZespolona.hh"
 
-
+using namespace std;
 
 /*!
  * Realizuje dodanie dwoch liczb zespolonych.
@@ -25,11 +25,6 @@ LZespolona utworz(double arg1, double arg2)
 }
 
 
-void wyswietl(LZespolona Skl)
-{
-  std::cout<<"("<<Skl.re<<showpos<<Skl.im<<
-    noshowpos<<"i)";
-}
 
 LZespolona Sprzezenie(LZespolona Skl)
 {
@@ -79,9 +74,16 @@ LZespolona  operator *(LZespolona  Skl1,  LZespolona  Skl2)
 LZespolona operator /(LZespolona Skl1, double Skl2)
 {
   LZespolona Wynik;
-
+  if(Skl2!=0)
+    {
   Wynik.re = Skl1.re/Skl2;
   Wynik.im = Skl1.im/Skl2;
+    }
+  else
+    {
+      cerr<<"Dzielenie przez 0 jest niedozwolone.";
+      exit(1);
+    }
   return Wynik;
 }
 
@@ -92,6 +94,17 @@ LZespolona operator /(LZespolona Skl1, LZespolona Skl2)
   return Wynik;
 }
 
+bool operator ==(LZespolona Skl1, LZespolona Skl2)
+{
+  if(abs(Skl1.re-Skl2.re)<0.00001 && abs(Skl1.im-Skl2.im)<0.00001)
+    return true;
+  return false;
+}
+
+bool operator != (LZespolona Skl1, LZespolona Skl2)
+{
+  return !(Skl1==Skl2);
+}
 
 std::istream & operator >>(std::istream &wejsc, LZespolona &Skl)
 {
