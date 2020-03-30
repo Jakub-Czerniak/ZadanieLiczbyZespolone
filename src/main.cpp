@@ -58,15 +58,17 @@ int main(int argc, char **argv)
 	cout << "Zostało prób: " << il_prob <<endl;
 	cin >> LZes_Odp;
       }
-    cout << endl;
+    
     if(Oblicz(WyrZ_PytanieTestowe)==LZes_Odp)
       {
 	cout <<"Odpowiedź poprawna." <<endl;
+	cout << endl;
 	poprawne(stat);
       }
     else
       {
-	cout <<"Odpowiedź niepoprawna" <<endl;
+	cout <<"Odpowiedź niepoprawna. Prawidłową odpowiedzią jest: "<< Oblicz(WyrZ_PytanieTestowe) <<endl;
+	cout << endl;
 	niepoprawna(stat);
       }    
   }
